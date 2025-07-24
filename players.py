@@ -1,9 +1,9 @@
 import pygame
 
-# test
 
 class Player:
     TEXTURES: list = list()
+    MOVE_KEYS: list = list()
 
     def __init__(self, velocity, x, y, screen: pygame.surface.Surface):
         self.base    = pygame.image.load(self.TEXTURES[0]).convert_alpha()
@@ -20,17 +20,16 @@ class Player:
         self.velocity = velocity
 
     def move(self, keys: pygame.key.ScancodeWrapper):
-        if keys[pygame.K_LEFT]:
+        if keys[self.MOVE_KEYS[0]]:
             if self.texture_rect.left > 0:
                 self.texture_rect.move_ip(-self.velocity, 0)
 
-        if keys[pygame.K_RIGHT]:
+        if keys[self.MOVE_KEYS[1]]:
             screen_width, _ = self.screen.get_size()
             if self.texture_rect.right < screen_width:
                 self.texture_rect.move_ip(+self.velocity, 0)
 
     def draw(self):
-        # Отображение текстуры
         self.screen.blit(self.texture, self.texture_rect)
 
     def change_texture(self, index: int):  # index - number of image in TEXTURES
@@ -46,6 +45,16 @@ class Player1(Player):
         'images/strike3.png'
     ]
 
+    MOVE_KEYS = [pygame.K_LEFT, pygame.K_RIGHT]
+
 
 class Player2(Player):
-    pass
+    TEXTURES = [
+        'images/base_.png',
+        'images/block.png',
+        'images/strike1_.png',
+        'images/strike2_.png',
+        'images/strike3_.png'
+    ]
+
+    MOVE_KEYS = [pygame.K_a, pygame.K_d]
