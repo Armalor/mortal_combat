@@ -1,5 +1,14 @@
-import pygame
 import sys
+import time
+import random
+from os import path
+
+import pygame
+
+__path__ = path.dirname(path.abspath(__file__))
+sys.path.append(__path__)
+
+print(__path__)
 from players import Player, get_midpoint
 
 # Инициализация Pygame
@@ -10,23 +19,13 @@ SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 720
 FPS = 60
 
-# Выбор фонов
-print('НУ ЧЁ А ФОН КАКОЙ А? ВАРИАНТЫ 1 ИЛИ 2 ТАК И ПИШИ А!')
-try:
-    backgr = int(input())
-    if backgr not in [1, 2]:
-        print('НЕТУ ТАКОГО ВАРИАНТА ПОЧЕМУ ТЫ ТАК НАПИСАЛ А?????????????????')
-        pygame.quit()
-        sys.exit()
-except ValueError:
-    print('ЭЭЭЭ ТЫ ЧИСЛО ВВЕСТИ НЕ МОЖЕШЬ ЧТО ЛИ?? А????????')
-    pygame.quit()
-    sys.exit()
-
 # Создаем окно
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("ДИАЛОГ КОМБАТ")
 clock = pygame.time.Clock()
+
+# Рандомный выбор фона (1 или 2)
+backgr = random.randint(1, 2)
 
 # Загрузка текстур фона
 try:
@@ -34,9 +33,7 @@ try:
     bg_mid = pygame.image.load("textures/background_mid.png").convert_alpha()
     bg_front = pygame.image.load("textures/background_front.png").convert_alpha()
     bg_back_2 = pygame.image.load("textures/background_back_2.png").convert_alpha()
-    print('ТЕКСТУРЫ ФОНА ЗАГРУЗИЛИСЬ УРАААААААААААААААААААААААААА')
 except Exception as e:
-    print(f"БЛИН ТЕКСТУР ФОНА НЕТУ ЧЕЛ!! ОШИБКА: {e}")
     # Создаем заглушки для фона
     bg_back = pygame.Surface((SCREEN_WIDTH, 720))
     bg_back.fill((0, 0, 100))
@@ -79,6 +76,7 @@ player2 = Player(
     flip=False,
     is_player1=False
 )
+
 # Параллакс-эффект
 class ParallaxBackground:
     def __init__(self):
@@ -119,25 +117,36 @@ class ParallaxBackground:
 
 parallax_bg = ParallaxBackground()
 
-
-# Главный игровой цикл
 running = True
+game_over = False
+winner = None
+game_over_time = 0
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     
-    keys = pygame.key.get_pressed()
+    if not game_over:
+        keys = pygame.key.get_pressed()
+        
+        player1.update(keys, player2)
+        player2.update(keys, player1)
+        
+        midpoint = get_midpoint(player1, player2)
+        parallax_bg.update(midpoint[0])
+        
+        # Проверка на победу
+        if not player1.is_alive or not player2.is_alive:
+            game_over = True
+            winner = 2 if not player1.is_alive else 1
+            game_over_time = pygame.time.get_ticks()
+    else:
+        # Ждем 3 секунды после победы
+        if pygame.time.get_ticks() - game_over_time > 3000:
+            print(f"Игрок {winner} победил!")
+            running = False
     
-    # Обновление игроков
-    player1.update(keys, player2)
-    player2.update(keys, player1)
-    
-    # Обновление фона
-    midpoint = get_midpoint(player1, player2)
-    parallax_bg.update(midpoint[0])
-    
-    # Отрисовка
     screen.fill((0, 0, 0))
     parallax_bg.draw(screen)
     player1.draw()
@@ -146,7 +155,5 @@ while running:
     pygame.display.flip()
     clock.tick(FPS)
 
-# Выход
-print('ИГРА ЗАКРЫЛАСЬ! ПОЧЕМУ ТЫ ВЫШЕЛ АААААААААААААААААА?')
 pygame.quit()
 sys.exit()
