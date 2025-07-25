@@ -1,53 +1,21 @@
 import pygame
 
+from utils import get_pure_path
+
+
 class Player:
-    # Текстуры для разных воинов (warrior 1 и warrior 2)
-    TEXTURES = {
-        1: [
-            'textures/base.png',
-            'textures/block.png',
-            'textures/strike1.png',
-            'textures/strike2.png',
-            'textures/strike3.png'
-        ],
-        2: [
-            'textures/2_base.png',
-            'textures/2_block.png',
-            'textures/2_strike1.png',
-            'textures/2_strike2.png',
-            'textures/2_strike3.png'
-        ]
-    }
+
+    TEXTURES = []
     
-    def __init__(self, x, y, screen, controls, flip=False, is_player1=True, warrior=1):
-        self.warrior = warrior if is_player1 else 2  # Игрок 1 - warrior 1, игрок 2 - warrior 2
+    def __init__(self, x, y, screen, controls, flip=False, is_player1=True):
         
         try:
-            self.original_base = pygame.image.load(self.TEXTURES[self.warrior][0]).convert_alpha()
-            self.original_block = pygame.image.load(self.TEXTURES[self.warrior][1]).convert_alpha()
-            self.original_strike1 = pygame.image.load(self.TEXTURES[self.warrior][2]).convert_alpha()
-            self.original_strike2 = pygame.image.load(self.TEXTURES[self.warrior][3]).convert_alpha()
-            self.original_strike3 = pygame.image.load(self.TEXTURES[self.warrior][4]).convert_alpha()
-            
-            print(pygame.image.load(self.TEXTURES[self.warrior][4]).convert_alpha())
+            self.original_base = pygame.image.load(self.TEXTURES[0]).convert_alpha()
+            self.original_block = pygame.image.load(self.TEXTURES[1]).convert_alpha()
+            self.original_strike1 = pygame.image.load(self.TEXTURES[2]).convert_alpha()
+            self.original_strike2 = pygame.image.load(self.TEXTURES[3]).convert_alpha()
+            self.original_strike3 = pygame.image.load(self.TEXTURES[4]).convert_alpha()
 
-            # Масштабирование текстур для второго бойца
-            if self.warrior == 2:
-                self.original_base = pygame.transform.scale(self.original_base, 
-                    (int(self.original_base.get_width() / 4.1), 
-                     int(self.original_base.get_height() / 4.1)))
-                self.original_block = pygame.transform.scale(self.original_block, 
-                    (int(self.original_block.get_width() // 2), 
-                     int(self.original_block.get_height() // 2)))
-                self.original_strike1 = pygame.transform.scale(self.original_strike1, 
-                    (int(self.original_strike1.get_width() // 2), 
-                     int(self.original_strike1.get_height() // 2)))
-                self.original_strike2 = pygame.transform.scale(self.original_strike2, 
-                    (int(self.original_strike2.get_width() // 2), 
-                     int(self.original_strike2.get_height() // 2)))
-                self.original_strike3 = pygame.transform.scale(self.original_strike3, 
-                    (int(self.original_strike3.get_width() // 2), 
-                     int(self.original_strike3.get_height() // 2)))
         except Exception as err:
             print(f'{type(err)}: {err}')
             self.create_original_placeholder_textures()
@@ -85,43 +53,23 @@ class Player:
         # Размеры для второго бойца (уменьшенные)
         size2_base = (int(50 / 4.1), int(80 / 4.1))
         size2_other = (int(50 / 2), int(80 / 2))
-        
-        # Для warrior 1
-        if self.warrior == 1:
-            self.original_base = pygame.Surface(size1, pygame.SRCALPHA)
-            pygame.draw.rect(self.original_base, (255, 0, 0, 255), (0, 0, size1[0], size1[1]))
-            pygame.draw.polygon(self.original_base, (255, 255, 255, 255), 
-                              [(40, 10), (10, 40), (40, 70)])
-            
-            self.original_block = pygame.Surface(size1, pygame.SRCALPHA)
-            self.original_block.fill((0, 255, 0, 255))
-            
-            self.original_strike1 = pygame.Surface(size1, pygame.SRCALPHA)
-            self.original_strike1.fill((255, 255, 0, 255))
-            
-            self.original_strike2 = pygame.Surface(size1, pygame.SRCALPHA)
-            self.original_strike2.fill((255, 165, 0, 255))
-            
-            self.original_strike3 = pygame.Surface(size1, pygame.SRCALPHA)
-            self.original_strike3.fill((255, 69, 0, 255))
-        # Для warrior 2
-        else:
-            self.original_base = pygame.Surface(size2_base, pygame.SRCALPHA)
-            pygame.draw.rect(self.original_base, (0, 0, 255, 255), (0, 0, size2_base[0], size2_base[1]))
-            pygame.draw.polygon(self.original_base, (255, 255, 255, 255), 
-                              [(size2_base[0]-10, 10), (10, size2_base[1]//2), (size2_base[0]-10, size2_base[1]-10)])
-            
-            self.original_block = pygame.Surface(size2_other, pygame.SRCALPHA)
-            self.original_block.fill((255, 0, 255, 255))
-            
-            self.original_strike1 = pygame.Surface(size2_other, pygame.SRCALPHA)
-            self.original_strike1.fill((0, 255, 255, 255))
-            
-            self.original_strike2 = pygame.Surface(size2_other, pygame.SRCALPHA)
-            self.original_strike2.fill((0, 165, 255, 255))
-            
-            self.original_strike3 = pygame.Surface(size2_other, pygame.SRCALPHA)
-            self.original_strike3.fill((0, 69, 255, 255))
+
+        self.original_base = pygame.Surface(size1, pygame.SRCALPHA)
+        pygame.draw.rect(self.original_base, (255, 0, 0, 255), (0, 0, size1[0], size1[1]))
+        pygame.draw.polygon(self.original_base, (255, 255, 255, 255),
+                            [(40, 10), (10, 40), (40, 70)])
+
+        self.original_block = pygame.Surface(size1, pygame.SRCALPHA)
+        self.original_block.fill((0, 255, 0, 255))
+
+        self.original_strike1 = pygame.Surface(size1, pygame.SRCALPHA)
+        self.original_strike1.fill((255, 255, 0, 255))
+
+        self.original_strike2 = pygame.Surface(size1, pygame.SRCALPHA)
+        self.original_strike2.fill((255, 165, 0, 255))
+
+        self.original_strike3 = pygame.Surface(size1, pygame.SRCALPHA)
+        self.original_strike3.fill((255, 69, 0, 255))
     
     def update_texture_direction(self, other_player):
         if not self.is_alive or not other_player.is_alive:
@@ -152,8 +100,7 @@ class Player:
             return
             
         current_time = pygame.time.get_ticks()
-        if (self.is_attacking and 
-            self.attack_frame >= 5 and self.attack_frame < 15 and
+        if (self.is_attacking and 5 <= self.attack_frame < 15 and
             abs(self.rect.centerx - other_player.rect.centerx) < self.attack_range and
             abs(self.rect.centery - other_player.rect.centery) < 100 and
             current_time - other_player.last_hit_time > self.hit_cooldown):
@@ -205,7 +152,7 @@ class Player:
             
         bar_width = 200
         bar_height = 20
-        hp_width = (self.hp / self.max_hp) * bar_width
+        hp_width = int((self.hp / self.max_hp) * bar_width)
         
         if self.is_player1:
             x = 20
@@ -213,7 +160,7 @@ class Player:
             color = (255, 0, 0)
         else:
             x = self.screen.get_width() - bar_width - 20
-            text_x = x + bar_width - 110
+            text_x = x + bar_width - 190
             color = (0, 0, 255)
         
         y = 20
@@ -222,14 +169,37 @@ class Player:
         pygame.draw.rect(self.screen, color, (x, y, hp_width, bar_height))
         pygame.draw.rect(self.screen, (255, 255, 255), (x, y, bar_width, bar_height), 2)
         
-        font = pygame.font.Font(None, 24)
-        text = font.render(f"Игрок {'1' if self.is_player1 else '2'}: {self.hp}/{self.max_hp}", True, (255, 255, 255))
-        self.screen.blit(text, (text_x, y - 2))
+        font = pygame.font.Font(get_pure_path('fonts/verdanab.ttf'), 12)
+        text = font.render(f"Игрок {'1' if self.is_player1 else '2'}:     {self.hp}/{self.max_hp}", True, (255, 255, 255))
+        self.screen.blit(text, (text_x, y + 2))
     
     def draw(self):
         if self.is_alive:
             self.screen.blit(self.current_texture, self.rect)
             self.draw_hp_bar()
+
+
+class Player1(Player):
+
+    TEXTURES = [
+            get_pure_path('textures/1_svsh/base.png'),
+            get_pure_path('textures/1_svsh/block.png'),
+            get_pure_path('textures/1_svsh/strike1.png'),
+            get_pure_path('textures/1_svsh/strike2.png'),
+            get_pure_path('textures/1_svsh/strike3.png'),
+        ]
+
+
+class Player2(Player):
+
+    TEXTURES = [
+            get_pure_path('textures/2_boris_chai/base.png'),
+            get_pure_path('textures/2_boris_chai/block.png'),
+            get_pure_path('textures/2_boris_chai/strike1.png'),
+            get_pure_path('textures/2_boris_chai/strike2.png'),
+            get_pure_path('textures/2_boris_chai/strike3.png'),
+        ]
+
 
 def get_midpoint(player1, player2):
     return ((player1.rect.centerx + player2.rect.centerx) // 2, 

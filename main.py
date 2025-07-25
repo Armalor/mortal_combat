@@ -7,16 +7,15 @@ import pygame
 
 __path__ = path.dirname(path.abspath(__file__))
 sys.path.append(__path__)
-
-print(__path__)
-from players import Player, get_midpoint
+from players import Player1, Player2, get_midpoint
+from utils import get_pure_path
 
 # Инициализация Pygame
 pygame.init()
 
 # Константы
-SCREEN_WIDTH = 960
-SCREEN_HEIGHT = 720
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 700
 FPS = 60
 
 # Создаем окно
@@ -27,12 +26,13 @@ clock = pygame.time.Clock()
 # Рандомный выбор фона (1 или 2)
 backgr = random.randint(1, 2)
 
+
 # Загрузка текстур фона
 try:
-    bg_back = pygame.image.load("textures/background_back.png").convert_alpha()
-    bg_mid = pygame.image.load("textures/background_mid.png").convert_alpha()
-    bg_front = pygame.image.load("textures/background_front.png").convert_alpha()
-    bg_back_2 = pygame.image.load("textures/background_back_2.png").convert_alpha()
+    bg_back = pygame.image.load(get_pure_path("textures/background_back.png")).convert_alpha()
+    bg_mid = pygame.image.load(get_pure_path("textures/background_mid.png")).convert_alpha()
+    bg_front = pygame.image.load(get_pure_path("textures/background_front.png")).convert_alpha()
+    bg_back_2 = pygame.image.load(get_pure_path("textures/background_back_2.png")).convert_alpha()
 except Exception as e:
     # Создаем заглушки для фона
     bg_back = pygame.Surface((SCREEN_WIDTH, 720))
@@ -47,35 +47,36 @@ except Exception as e:
 # Масштабирование текстур фона
 bg_front = pygame.transform.scale(bg_front, (960, SCREEN_HEIGHT // 2))
 bg_mid = pygame.transform.scale(bg_mid, (SCREEN_WIDTH * 2, SCREEN_HEIGHT // 2))
-bg_back = pygame.transform.scale(bg_back, (SCREEN_WIDTH * 1.5, SCREEN_HEIGHT * 1.5))
-bg_back_2 = pygame.transform.scale(bg_back_2, (SCREEN_WIDTH * 1.5, SCREEN_HEIGHT * 1.5))
+bg_back = pygame.transform.scale(bg_back, (int(SCREEN_WIDTH * 1.5), int(SCREEN_HEIGHT * 1.5)))
+bg_back_2 = pygame.transform.scale(bg_back_2, (int(SCREEN_WIDTH * 1.5), int(SCREEN_HEIGHT * 1.5)))
 
 # Создаем игроков
-player1 = Player(
+player1 = Player1(
     x=200, 
-    y=720, 
+    y=690,
     screen=screen,
     controls={
-        "left": pygame.K_a,
-        "right": pygame.K_d,
+        "left": pygame.K_d,
+        "right":  pygame.K_a,
         "attack": pygame.K_RCTRL
     },
-    flip=False,
+    flip=True,
     is_player1=True
 )
 
-player2 = Player(
+player2 = Player2(
     x=700, 
-    y=720, 
+    y=690,
     screen=screen,
     controls={
-        "left": pygame.K_LEFT,
-        "right": pygame.K_RIGHT,
+        "left": pygame.K_RIGHT,
+        "right": pygame.K_LEFT,
         "attack": pygame.K_f
     },
     flip=False,
     is_player1=False
 )
+
 
 # Параллакс-эффект
 class ParallaxBackground:
@@ -115,6 +116,7 @@ class ParallaxBackground:
         surface.blit(bg_front, (self.front_pos + bg_front.get_width(), front_y))
         surface.blit(bg_front, (self.front_pos - bg_front.get_width(), front_y))
 
+
 parallax_bg = ParallaxBackground()
 
 running = True
@@ -144,7 +146,7 @@ while running:
     else:
         # Ждем 3 секунды после победы
         if pygame.time.get_ticks() - game_over_time > 3000:
-            print(f"Игрок {winner} победил!")
+            # print(f"Игрок {winner} победил!")
             running = False
     
     screen.fill((0, 0, 0))
