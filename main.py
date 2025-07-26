@@ -7,7 +7,7 @@ import pygame
 
 __path__ = path.dirname(path.abspath(__file__))
 sys.path.append(__path__)
-from players import Player1, Player2, Player3, get_midpoint
+from players import Player1, Player2, Player3, get_midpoint, Player4
 from utils import get_pure_path
 
 # Инициализация Pygame
@@ -64,14 +64,14 @@ player1 = Player1(
     is_player1=True
 )
 
-player2 = Player3(
+player2 = Player4(
     x=700, 
     y=690,
     screen=screen,
     controls={
         "left": pygame.K_RIGHT,
         "right": pygame.K_LEFT,
-        "attack": pygame.K_f
+        "attack": pygame.K_s
     },
     flip=False,
     is_player1=False
