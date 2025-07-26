@@ -1,2 +1,3 @@
 # Python 3.10.7
+pygame
 pyinstaller==6.10.0

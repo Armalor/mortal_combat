@@ -1,11 +1,15 @@
 import pygame
+from abc import ABC
 
 from utils import get_pure_path
 
 
-class Player:
+class Player (ABC):
+    """Это базовый абстрактный класс, создавать его объекты НЕЛЬЗЯ. """
 
     TEXTURES = []
+
+    NAME = None
     
     def __init__(self, x, y, screen, controls, flip=False, is_player1=True):
         
@@ -181,6 +185,8 @@ class Player:
 
 class Player1(Player):
 
+    NAME = 'Мега-СВШ'
+
     TEXTURES = [
             get_pure_path('textures/1_svsh/base.png'),
             get_pure_path('textures/1_svsh/block.png'),
@@ -192,6 +198,8 @@ class Player1(Player):
 
 class Player2(Player):
 
+    NAME = 'Человек-Борян'
+
     TEXTURES = [
             get_pure_path('textures/2_boris_chai/base.png'),
             get_pure_path('textures/2_boris_chai/block.png'),
@@ -201,6 +209,7 @@ class Player2(Player):
         ]
 
 
-def get_midpoint(player1, player2):
+def get_midpoint(player1: Player, player2: Player):
+
     return ((player1.rect.centerx + player2.rect.centerx) // 2, 
             (player1.rect.centery + player2.rect.centery) // 2)
