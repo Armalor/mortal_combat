@@ -2,15 +2,14 @@ import pygame
 
 
 class Player:
-    TEXTURES: list = list()
     MOVE_KEYS: list = list()
 
-    def __init__(self, velocity, x, y, screen: pygame.surface.Surface):
-        self.base    = pygame.image.load(self.TEXTURES[0]).convert_alpha()
-        self.block   = pygame.image.load(self.TEXTURES[1]).convert_alpha()
-        self.strike1 = pygame.image.load(self.TEXTURES[2]).convert_alpha()
-        self.strike2 = pygame.image.load(self.TEXTURES[3]).convert_alpha()
-        self.strike3 = pygame.image.load(self.TEXTURES[4]).convert_alpha()
+    def __init__(self, velocity, x, y, screen: pygame.surface.Surface, TEXTURES: list):
+        self.base    = pygame.image.load(TEXTURES[0]).convert_alpha()
+        self.block   = pygame.image.load(TEXTURES[1]).convert_alpha()
+        self.strike1 = pygame.image.load(TEXTURES[2]).convert_alpha()
+        self.strike2 = pygame.image.load(TEXTURES[3]).convert_alpha()
+        self.strike3 = pygame.image.load(TEXTURES[4]).convert_alpha()
 
         self.texture = self.base
 
@@ -37,24 +36,8 @@ class Player:
 
 
 class Player1(Player):
-    TEXTURES = [
-        'images/base.png',
-        'images/block.png',
-        'images/strike1.png',
-        'images/strike2.png',
-        'images/strike3.png'
-    ]
-
     MOVE_KEYS = [pygame.K_LEFT, pygame.K_RIGHT]
 
 
 class Player2(Player):
-    TEXTURES = [
-        'images/base_.png',
-        'images/block.png',
-        'images/strike1_.png',
-        'images/strike2_.png',
-        'images/strike3_.png'
-    ]
-
     MOVE_KEYS = [pygame.K_a, pygame.K_d]
