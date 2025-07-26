@@ -1,22 +1,45 @@
 import pygame
+from abc import ABC
 
 
-class Player:
+class PlayerRegistry:
+
+    __instance: 'PlayerRegistry' = None
+
+    players: list = list()
+
+    def __new__(cls, *args, **kwargs):
+
+        if not PlayerRegistry.__instance:
+            PlayerRegistry.__instance = super().__new__(cls)
+
+        return PlayerRegistry.__instance
+
+    @classmethod
+    def register(cls, player: 'Player'):
+        cls.players.append(player)
+
+
+class Player(ABC):
+    TEXTURES: list = list()
     MOVE_KEYS: list = list()
 
     def __init__(self, velocity, x, y, screen: pygame.surface.Surface, TEXTURES: list):
+        # images
         self.base    = pygame.image.load(TEXTURES[0]).convert_alpha()
         self.block   = pygame.image.load(TEXTURES[1]).convert_alpha()
         self.strike1 = pygame.image.load(TEXTURES[2]).convert_alpha()
         self.strike2 = pygame.image.load(TEXTURES[3]).convert_alpha()
         self.strike3 = pygame.image.load(TEXTURES[4]).convert_alpha()
 
-        self.texture = self.base
+        self.texture = self.base  # current image
 
         self.texture_rect = self.texture.get_rect()
         self.texture_rect.center = (x, y - self.texture_rect.height // 2)
         self.screen = screen
         self.velocity = velocity
+
+        PlayerRegistry.register(self)
 
     def move(self, keys: pygame.key.ScancodeWrapper):
         if keys[self.MOVE_KEYS[0]]:
@@ -36,8 +59,22 @@ class Player:
 
 
 class Player1(Player):
+    TEXTURES = [
+        'images/base.png',
+        'images/block.png',
+        'images/strike1.png',
+        'images/strike2.png',
+        'images/strike3.png'
+    ]
     MOVE_KEYS = [pygame.K_LEFT, pygame.K_RIGHT]
 
 
 class Player2(Player):
+    TEXTURES = [
+        'images/base_.png',
+        'images/block_.png',
+        'images/strike1_.png',
+        'images/strike2_.png',
+        'images/strike3_.png'
+    ]
     MOVE_KEYS = [pygame.K_a, pygame.K_d]

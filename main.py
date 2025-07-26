@@ -1,5 +1,5 @@
 import pygame
-from players import Player
+from players import Player1, Player2
 from time import sleep
 from threading import Thread
 
@@ -59,7 +59,7 @@ def main():
         pygame.display.flip()
 
 
-def strike_th (player1):
+def strike_th(player1):
     pause = 0.35 / 3
     player1.change_texture(2)
     sleep(pause)
@@ -103,10 +103,10 @@ def menushka(screen):
 
                 elif event.key == pygame.K_RETURN:  # выбор игрока
                     if curr_player == 1 and player1 is None:
-                        player1 = Player(10, 300, 500, screen, [player_images[curr_p1_idx], None, None, None, None])
+                        player1 = Player1(10, 300, 500, screen, [player_images[curr_p1_idx], None, None, None, None])
 
                     elif curr_player == -1 and player2 is None:
-                        player2 = Player(10, 300, 500, screen, [player_images[curr_p2_idx], None, None, None, None])
+                        player2 = Player2(10, 300, 500, screen, [player_images[curr_p2_idx], None, None, None, None])
 
                 elif event.key == pygame.K_DOWN:  # переключение игроков
                     curr_p1_idx = (curr_p1_idx - 1) % len(player_images)
