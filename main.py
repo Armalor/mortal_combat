@@ -1,5 +1,4 @@
 import sys
-import time
 import random
 from os import path
 
@@ -54,6 +53,7 @@ def menushka(screen):
     player1_instance = player2_instance = None  # игроки изначально не выбраны
     curr_p1_idx = curr_p2_idx = 0
     curr_section = 1  # 1 -> player1; -1 -> player2
+    plus = 1
 
     players = [Player1, Player2, Player3]  # Список классов игроков
 
@@ -105,18 +105,15 @@ def menushka(screen):
                         )
 
                 elif event.key == pygame.K_DOWN:  # переключение игроков
-                    if player1_instance is None:
-                        curr_p1_idx = (curr_p1_idx + 1) % len(players)
-
-                    if player2_instance is None:
-                        curr_p2_idx = (curr_p2_idx + 1) % len(players)
-
+                    plus = 1
                 elif event.key == pygame.K_UP:
-                    if player1_instance is None:
-                        curr_p1_idx = (curr_p1_idx - 1) % len(players)
+                    plus = -1
 
-                    if player2_instance is None:
-                        curr_p2_idx = (curr_p2_idx - 1) % len(players)
+                #
+                if player1_instance is None and curr_section == 1:
+                    curr_p1_idx = (curr_p1_idx + plus) % len(players)
+                if player2_instance is None and curr_section == -1:
+                    curr_p2_idx = (curr_p2_idx + plus) % len(players)
 
         # переключение квадратов
         if curr_section == 1:
@@ -138,10 +135,12 @@ def menushka(screen):
 
         if player1_instance is not None:
             text_selected1 = font_small.render("Боец 1 выбран", True, (255, 0, 0))
-            screen.blit(text_selected1, (player1_rect.centerx - text_selected1.get_width() // 2, player1_rect.bottom + 10))
+            screen.blit(text_selected1,
+                        (player1_rect.centerx - text_selected1.get_width() // 2, player1_rect.bottom + 10))
         if player2_instance is not None:
             text_selected2 = font_small.render("Боец 2 выбран", True, (255, 0, 0))
-            screen.blit(text_selected2, (player2_rect.centerx - text_selected2.get_width() // 2, player2_rect.bottom + 10))
+            screen.blit(text_selected2,
+                        (player2_rect.centerx - text_selected2.get_width() // 2, player2_rect.bottom + 10))
 
         pygame.display.flip()
 
