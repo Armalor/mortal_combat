@@ -209,6 +209,19 @@ class Player2(Player):
         ]
 
 
+class Player3(Player):
+
+    NAME = 'Гигантский Стефан'
+
+    TEXTURES = [
+            get_pure_path('textures/3_gigant_stefan/base.png'),
+            get_pure_path('textures/3_gigant_stefan/base.png'),
+            get_pure_path('textures/3_gigant_stefan/base.png'),
+            get_pure_path('textures/3_gigant_stefan/base.png'),
+            get_pure_path('textures/3_gigant_stefan/base.png'),
+        ]
+
+
 def get_midpoint(player1: Player, player2: Player):
 
     return ((player1.rect.centerx + player2.rect.centerx) // 2, 
