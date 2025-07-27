@@ -19,6 +19,8 @@ class Player (ABC):
             self.original_strike1 = pygame.image.load(self.TEXTURES[2]).convert_alpha()
             self.original_strike2 = pygame.image.load(self.TEXTURES[3]).convert_alpha()
             self.original_strike3 = pygame.image.load(self.TEXTURES[4]).convert_alpha()
+            self.win = pygame.image.load(self.TEXTURES[5]).convert_alpha()
+            self.die = pygame.image.load(self.TEXTURES[6]).convert_alpha()
 
         except Exception as err:
             print(f'{type(err)}: {err}')
@@ -88,6 +90,7 @@ class Player (ABC):
             self.strike1 = pygame.transform.flip(self.original_strike1, self.should_flip, False)
             self.strike2 = pygame.transform.flip(self.original_strike2, self.should_flip, False)
             self.strike3 = pygame.transform.flip(self.original_strike3, self.should_flip, False)
+
             
             if self.is_attacking:
                 if self.attack_frame < 5:
@@ -99,23 +102,7 @@ class Player (ABC):
             else:
                 self.current_texture = self.base
     
-    def check_hit(self, other_player):
-        if not self.is_alive or not other_player.is_alive:
-            return
-            
-        current_time = pygame.time.get_ticks()
-        if (self.is_attacking and 5 <= self.attack_frame < 15 and
-            abs(self.rect.centerx - other_player.rect.centerx) < self.attack_range and
-            abs(self.rect.centery - other_player.rect.centery) < 100 and
-            current_time - other_player.last_hit_time > self.hit_cooldown):
-            
-            damage = 1 if other_player.BLOCK else 10
-            other_player.hp = max(0, other_player.hp - damage)
-            other_player.last_hit_time = current_time
-            
-            if other_player.hp <= 0:
-                other_player.is_alive = False
-    
+
     def update(self, keys, other_player):
         if not self.is_alive:
             return
@@ -131,8 +118,19 @@ class Player (ABC):
             self.is_attacking = True
             self.attack_frame = 0
             self.attack_cooldown = 30
-        
-        if self.is_attacking:
+
+        if pygame.key.get_pressed()[self.controls["block"]] == 1:
+            self.BLOCK = True
+
+
+        if self.BLOCK:
+            self.current_texture = self.block
+            if pygame.key.get_pressed()[self.controls["block"]] == 0:
+                self.BLOCK = False
+                self.current_texture = self.base
+
+
+        if self.is_attacking and self.BLOCK == False:
             self.attack_frame += 1
             if self.attack_frame < 5:
                 self.current_texture = self.strike1
@@ -149,7 +147,27 @@ class Player (ABC):
         
         self.rect.x = max(0, min(self.rect.x, self.screen.get_width() - self.rect.width))
         self.check_hit(other_player)
-    
+
+    def check_hit(self, other_player):
+        if not self.is_alive or not other_player.is_alive:
+            return
+
+        current_time = pygame.time.get_ticks()
+        if (self.is_attacking and self.BLOCK == False and 5 <= self.attack_frame < 15 and
+                abs(self.rect.centerx - other_player.rect.centerx) < self.attack_range and
+                abs(self.rect.centery - other_player.rect.centery) < 100 and
+                current_time - other_player.last_hit_time > self.hit_cooldown):
+
+            damage = 1 if other_player.BLOCK else 10
+            other_player.hp = max(0, other_player.hp - damage)
+            other_player.last_hit_time = current_time
+
+            if other_player.hp <= 0:
+                self.current_texture = self.win
+
+                other_player.is_alive = False
+
+
     def draw_hp_bar(self):
         if not self.is_alive:
             return
@@ -181,6 +199,9 @@ class Player (ABC):
         if self.is_alive:
             self.screen.blit(self.current_texture, self.rect)
             self.draw_hp_bar()
+        else:
+            self.current_texture = self.die
+            self.screen.blit(self.current_texture, self.rect)
 
 
 class Player1(Player):
@@ -219,11 +240,13 @@ class Player4(Player):
         get_pure_path('textures/4_kapiboris/boris_ydar1-Photoroom.png'),
         get_pure_path('textures/4_kapiboris/borsi_ydar2-Photoroom.png'),
         get_pure_path('textures/4_kapiboris/boris_ydar3-Photoroom.png'),
+        get_pure_path('textures/4_kapiboris/boris_win-Photoroom.png'),
+        get_pure_path('textures/4_kapiboris/boris_die-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_apercot1-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_apercot2-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_apercot3-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_die-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_win-Photoroom.png'),
+
+
         # get_pure_path('textures/4_kapiboris/boris_prised1-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_prised2-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_magiya-Photoroom.png'),
@@ -237,11 +260,13 @@ class Player3(Player):
     NAME = 'Гигантский Стефан'
 
     TEXTURES = [
-            get_pure_path('textures/3_gigant_stefan/base.png'),
-            get_pure_path('textures/3_gigant_stefan/base.png'),
-            get_pure_path('textures/3_gigant_stefan/base.png'),
-            get_pure_path('textures/3_gigant_stefan/base.png'),
-            get_pure_path('textures/3_gigant_stefan/base.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_stoika-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_block-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar1-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar2-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar3-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_win-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_proigral-Photoroom.png'),
         ]
 
 

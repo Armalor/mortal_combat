@@ -51,14 +51,16 @@ bg_back = pygame.transform.scale(bg_back, (int(SCREEN_WIDTH * 1.5), int(SCREEN_H
 bg_back_2 = pygame.transform.scale(bg_back_2, (int(SCREEN_WIDTH * 1.5), int(SCREEN_HEIGHT * 1.5)))
 
 # Создаем игроков
-player1 = Player1(
+player1 = Player3(
     x=200, 
     y=690,
     screen=screen,
     controls={
         "left": pygame.K_d,
         "right":  pygame.K_a,
-        "attack": pygame.K_RCTRL
+        "attack": pygame.K_DOWN,
+        "block": pygame.K_UP,
+        "jump": pygame.K_RCTRL
     },
     flip=True,
     is_player1=True
@@ -71,7 +73,9 @@ player2 = Player4(
     controls={
         "left": pygame.K_RIGHT,
         "right": pygame.K_LEFT,
-        "attack": pygame.K_s
+        "attack": pygame.K_s,
+        "block": pygame.K_w,
+        "jump": pygame.K_e
     },
     flip=False,
     is_player1=False
@@ -145,6 +149,7 @@ while running:
             game_over_time = pygame.time.get_ticks()
     else:
         # Ждем 3 секунды после победы
+
         if pygame.time.get_ticks() - game_over_time > 3000:
             # print(f"Игрок {winner} победил!")
             running = False
