@@ -2,13 +2,13 @@ import sys
 import random
 from os import path
 from menu import menushka
-from players import get_midpoint, PlayerRegistry
+from utils import get_pure_path
+from players import get_midpoint
 
 import pygame
 
 __path__ = path.dirname(path.abspath(__file__))
 sys.path.append(__path__)
-from utils import get_pure_path
 
 # Инициализация Pygame
 pygame.init()

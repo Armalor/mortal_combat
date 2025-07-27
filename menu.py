@@ -1,5 +1,5 @@
 import pygame
-from players import Player1, Player2, Player3
+from players import Player
 
 
 def menushka(screen):
@@ -8,7 +8,7 @@ def menushka(screen):
     curr_section = 1  # 1 -> player1; -1 -> player2
     plus = 1
 
-    players = [Player1, Player2, Player3]  # Список классов игроков
+    players = Player.players  # Список классов игроков
 
     player1_rect = pygame.Rect(100, 100, 300, 500)
     player2_rect = pygame.Rect(800, 100, 300, 500)
@@ -23,7 +23,7 @@ def menushka(screen):
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
-                return (player1_instance, player2_instance)
+                return player1_instance, player2_instance
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:  # переключение панелей
@@ -97,4 +97,12 @@ def menushka(screen):
 
         pygame.display.flip()
 
-    return (player1_instance, player2_instance)
+    return player1_instance, player2_instance
+
+
+if __name__ == '__main__':  # просто пример
+
+    player_list = Player.players
+
+    for player_class in player_list:
+        print(player_class)
