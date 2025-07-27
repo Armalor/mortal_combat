@@ -60,7 +60,8 @@ player1 = Player3(
         "right":  pygame.K_a,
         "attack": pygame.K_DOWN,
         "block": pygame.K_UP,
-        "jump": pygame.K_RCTRL
+        "jump": pygame.K_RCTRL,
+        "aperkot": pygame.K_RSHIFT
     },
     flip=True,
     is_player1=True
@@ -75,7 +76,8 @@ player2 = Player4(
         "right": pygame.K_LEFT,
         "attack": pygame.K_s,
         "block": pygame.K_w,
-        "jump": pygame.K_e
+        "jump": pygame.K_e,
+        "aperkot": pygame.K_q
     },
     flip=False,
     is_player1=False
