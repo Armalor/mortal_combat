@@ -1,30 +1,29 @@
 import pygame
-from abc import ABC
-
+from abc import ABC, ABCMeta
 from utils import get_pure_path
 
 
-class PlayerRegistry:
+class PlayerMeta(ABCMeta):
+    """Метакласс для автоматической регистрации подклассов Player."""
+    _players = []
 
-    __instance: 'PlayerRegistry' = None
+    def __new__(mcs, name, bases, attrs):
+        """Вызывается при создании нового класса."""
+        new_class = super().__new__(mcs, name, bases, attrs)
 
-    players: list = list()
+        # Проверяем, что созданный класс - не сам Player (базовый класс) и является подклассом Player.
+        # Иначе мы бы добавили сам Player в список.
+        if ABC not in bases and Player in bases:
+            PlayerMeta._players.append(new_class)
+        return new_class
 
-    def __new__(cls, *args, **kwargs):
-
-        if not PlayerRegistry.__instance:
-            PlayerRegistry.__instance = super().__new__(cls)
-
-        return PlayerRegistry.__instance
-
-    @classmethod
-    def register(cls, player: 'Player'):
-        cls.players.append(player)
+    @property
+    def players(cls):
+        """Возвращает список зарегистрированных подклассов."""
+        return list(cls._players)  # Возвращаем копию, чтобы не изменялся исходный список
 
 
-class Player(ABC):
-    """Это базовый абстрактный класс, создавать его объекты НЕЛЬЗЯ. """
-
+class Player(ABC, metaclass=PlayerMeta):
     TEXTURES = []
 
     NAME = None
@@ -209,7 +208,6 @@ class Player1(Player):
         get_pure_path('textures/1_svsh/strike2.png'),
         get_pure_path('textures/1_svsh/strike3.png'),
     ]
-    #PlayerRegistry.register(self)
 
 
 class Player2(Player):
@@ -244,18 +242,7 @@ class Player4(Player):
         get_pure_path('textures/4_kapiboris/boris_block-Photoroom.png'),
         get_pure_path('textures/4_kapiboris/boris_ydar1-Photoroom.png'),
         get_pure_path('textures/4_kapiboris/borsi_ydar2-Photoroom.png'),
-        get_pure_path('textures/4_kapiboris/boris_ydar3-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_apercot1-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_apercot2-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_apercot3-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_die-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_win-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_prised1-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_prised2-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_magiya-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_jump_kick1-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_jump_kick1(2)-Photoroom.png'),
-        # get_pure_path('textures/4_kapiboris/boris_jump_kick-Photoroom.png'),
+        get_pure_path('textures/4_kapiboris/boris_ydar3-Photoroom.png')
     ]
 
 
