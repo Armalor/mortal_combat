@@ -247,7 +247,7 @@ class Player(ABC, metaclass=PlayerMeta):
         if not self.is_alive:
             return
 
-        bar_width = 200
+        bar_width = 250
         bar_height = 20
         hp_width = int((self.hp / self.max_hp) * bar_width)
 
@@ -257,7 +257,7 @@ class Player(ABC, metaclass=PlayerMeta):
             color = (255, 0, 0)
         else:
             x = self.screen.get_width() - bar_width - 20
-            text_x = x + bar_width - 190
+            text_x = x + bar_width - 240
             color = (0, 0, 255)
 
         y = 20
@@ -347,7 +347,7 @@ class Player3(Player):
 
 
 class Player5(Player):
-    Name = "Пока Кать"
+    NAME = "Пока Кать"
 
     TEXTURES = [
             get_pure_path('textures/5_katia/katia_stoika-Photoroom.png'),
