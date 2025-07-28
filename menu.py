@@ -36,12 +36,13 @@ def menushka(screen):
                             y=690,
                             screen=screen,
                             controls={
-                                 "left": pygame.K_d,
-                                 "right": pygame.K_a,
-                                 "attack": pygame.K_DOWN,
-                                 "block": pygame.K_UP,
-                                 "jump": pygame.K_RCTRL,
-                                 "aperkot": pygame.K_RSHIFT
+                                "left": pygame.K_d,
+                                "right": pygame.K_a,
+                                "attack": pygame.K_DOWN,
+                                "block": pygame.K_UP,
+                                "jump": pygame.K_RCTRL,
+                                "aperkot": pygame.K_RSHIFT,
+                                "magic": pygame.K_r
                             },
                             flip=True,
                             is_player1=True
@@ -57,7 +58,8 @@ def menushka(screen):
                                 "attack": pygame.K_s,
                                 "block": pygame.K_w,
                                 "jump": pygame.K_e,
-                                "aperkot": pygame.K_q
+                                "aperkot": pygame.K_q,
+                                "magic": pygame.K_m
                             },
                             flip=False,
                             is_player1=False
