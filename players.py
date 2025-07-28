@@ -279,50 +279,29 @@ class Player(ABC, metaclass=PlayerMeta):
             self.screen.blit(self.current_texture, self.rect)
 
 
-class Player1(Player):
-    NAME = 'Мега-СВШ'
-
-    TEXTURES = [
-        get_pure_path('textures/1_svsh/base_resized.png'),
-        get_pure_path('textures/1_svsh/block_resized.png'),
-        get_pure_path('textures/1_svsh/strike1_resized.png'),
-        get_pure_path('textures/1_svsh/strike2_resized.png'),
-        get_pure_path('textures/1_svsh/strike3_resized.png'),
-        get_pure_path('textures/1_svsh/win_resized.png'),
-        get_pure_path('textures/1_svsh/defeat_resized.png'),
-        get_pure_path('textures/1_svsh/aperkot1_resized.png'),
-        get_pure_path('textures/1_svsh/aperkot2_resized.png'),
-        get_pure_path('textures/1_svsh/aperkot3_resized.png')
-    ]
+# class Player1(Player):
+#     NAME = 'Мега-СВШ'
+#
+#     TEXTURES = [
+#         get_pure_path('textures/1_svsh/base.png'),
+#         get_pure_path('textures/1_svsh/block.png'),
+#         get_pure_path('textures/1_svsh/strike1.png'),
+#         get_pure_path('textures/1_svsh/strike2.png'),
+#         get_pure_path('textures/1_svsh/strike3.png'),
+#     ]
 
 
-class Player2(Player):
-    NAME = 'Человек-Борян'
+# class Player2(Player):
+#     NAME = 'Человек-Борян'
+#
+#     TEXTURES = [
+#         get_pure_path('textures/2_boris_chai/base.png'),
+#         get_pure_path('textures/2_boris_chai/block.png'),
+#         get_pure_path('textures/2_boris_chai/strike1.png'),
+#         get_pure_path('textures/2_boris_chai/strike2.png'),
+#         get_pure_path('textures/2_boris_chai/strike3.png'),
+#     ]
 
-    TEXTURES = [
-        get_pure_path('textures/2_boris_chai/base.png'),
-        get_pure_path('textures/2_boris_chai/block.png'),
-        get_pure_path('textures/2_boris_chai/strike1.png'),
-        get_pure_path('textures/2_boris_chai/strike2.png'),
-        get_pure_path('textures/2_boris_chai/strike3.png'),
-    ]
-
-
-class Player3(Player):
-    NAME = 'Гигантский Стефан'
-
-    TEXTURES = [
-        get_pure_path('textures/3_gigantstefan/stefan_stoika-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_block-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_ydar1-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_ydar2-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_ydar3-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_win-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_proigral-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_aperkot1-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_aperkot2-Photoroom.png'),
-        get_pure_path('textures/3_gigantstefan/stefan_aperkot3-Photoroom.png'),
-    ]
 
 
 class Player4(Player):
@@ -347,6 +326,41 @@ class Player4(Player):
         # get_pure_path('textures/4_kapiboris/boris_jump_kick1(2)-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_jump_kick-Photoroom.png'),
     ]
+
+
+class Player3(Player):
+
+    NAME = 'Гигантский Стефан'
+
+    TEXTURES = [
+            get_pure_path('textures/3_gigantstefan/stefan_stoika-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_block-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar1-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar2-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar3-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_win-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_proigral-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_aperkot1-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_aperkot2-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_aperkot3-Photoroom.png'),
+        ]
+
+
+class Player5(Player):
+    Name = "Пока Кать"
+
+    TEXTURES = [
+            get_pure_path('textures/5_katia/katia_stoika-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_block-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_ydar1-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_ydar2-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_ydar3-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_win-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_proigrala-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_aper1-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_aper2-Photoroom.png'),
+            get_pure_path('textures/5_katia/katia_aper3-Photoroom.png')
+        ]
 
 
 def get_midpoint(player1: Player, player2: Player):
