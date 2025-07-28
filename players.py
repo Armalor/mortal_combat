@@ -42,6 +42,8 @@ class Player(ABC, metaclass=PlayerMeta):
             self.original_aper2 = pygame.image.load(self.TEXTURES[8]).convert_alpha()
             self.original_aper3 = pygame.image.load(self.TEXTURES[9]).convert_alpha()
 
+            self.base_ = pygame.image.load(self.TEXTURES[10]).convert_alpha()
+
         except Exception as err:
             print(f'{type(err)}: {err}')
             self.create_original_placeholder_textures()
@@ -300,11 +302,17 @@ class Player2(Player):
     NAME = 'Человек-Борян'
 
     TEXTURES = [
-        get_pure_path('textures/2_boris_chai/base.png'),
+        get_pure_path('textures/2_boris_chai/base_resized.png'),
+        get_pure_path('textures/2_boris_chai/block_resized.png'),
+        get_pure_path('textures/2_boris_chai/strike1_resized.png'),
+        get_pure_path('textures/2_boris_chai/strike2_resized.png'),
+        get_pure_path('textures/2_boris_chai/strike3_resized.png'),
+        get_pure_path('textures/2_boris_chai/win_resized.png'),
+        get_pure_path('textures/2_boris_chai/defeat_resized.png'),
+        get_pure_path('textures/2_boris_chai/aperkot1_resized.png'),
+        get_pure_path('textures/2_boris_chai/aperkot2_resized.png'),
+        get_pure_path('textures/2_boris_chai/aperkot3_resized.png'),
         get_pure_path('textures/2_boris_chai/block.png'),
-        get_pure_path('textures/2_boris_chai/strike1.png'),
-        get_pure_path('textures/2_boris_chai/strike2.png'),
-        get_pure_path('textures/2_boris_chai/strike3.png'),
     ]
 
 

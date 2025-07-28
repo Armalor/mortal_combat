@@ -1,6 +1,7 @@
 menushka_backup.py
 tmp.py
 menushka.py
+textures/CHANGE.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

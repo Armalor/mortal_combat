@@ -85,10 +85,10 @@ def menushka(screen):
             pygame.draw.rect(screen, (0, 255, 0), player2_rect, 8)
 
         # рисование бойцов
-        player_img1 = pygame.image.load(players[curr_p1_idx].TEXTURES[0])
+        player_img1 = pygame.image.load(players[curr_p1_idx].TEXTURES[10])
         player_img1_rect = player_img1.get_rect(center=(250, 350))
 
-        player_img2 = pygame.image.load(players[curr_p2_idx].TEXTURES[0])
+        player_img2 = pygame.image.load(players[curr_p2_idx].TEXTURES[10])
         player_img2_rect = player_img2.get_rect(center=(950, 350))
 
         screen.blit(player_img1, player_img1_rect)
