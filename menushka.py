@@ -17,7 +17,6 @@ def menushka(screen):
     player2_rect = pygame.Rect(800, 100, 300, 500)
 
     font = pygame.font.SysFont('SysFont', 52)
-    text1 = font.render('Выберите бойца', False, (255, 255, 255))
     font_small = pygame.font.SysFont('SysFont', 32)
 
     screen.fill((0, 0, 0))
