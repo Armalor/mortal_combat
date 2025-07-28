@@ -1,5 +1,6 @@
 import pygame
 from players import Player
+from utils import get_pure_path
 
 
 def menushka(screen):
@@ -13,9 +14,9 @@ def menushka(screen):
 
     # Load background textures
     try:
-        bg_choose = pygame.image.load('textures/pchoosebck.png').convert_alpha()
-        bg_p1 = pygame.image.load('textures/p1bck.png').convert_alpha()
-        bg_p2 = pygame.image.load('textures/p2bck.png').convert_alpha()
+        bg_choose = pygame.image.load(get_pure_path('textures/pchoosebck.png')).convert_alpha()
+        bg_p1 = pygame.image.load(get_pure_path('textures/p1bck.png')).convert_alpha()
+        bg_p2 = pygame.image.load(get_pure_path('textures/p2bck.png')).convert_alpha()
 
         # Scale backgrounds to fit the selection areas
         bg_choose = pygame.transform.scale(bg_choose, (screen.get_width(), screen.get_height()))
@@ -131,10 +132,10 @@ def menushka(screen):
                 pygame.draw.rect(screen, (0, 255, 0), player2_rect, 8)
 
             # Draw characters
-            player_img1 = pygame.image.load(players[curr_p1_idx].TEXTURES[0])
+            player_img1 = pygame.image.load(players[curr_p1_idx].TEXTURES[5])
             player_img1_rect = player_img1.get_rect(center=(250, 350))
 
-            player_img2 = pygame.image.load(players[curr_p2_idx].TEXTURES[0])
+            player_img2 = pygame.image.load(players[curr_p2_idx].TEXTURES[5])
             player_img2_rect = player_img2.get_rect(center=(950, 350))
 
             screen.blit(player_img1, player_img1_rect)
