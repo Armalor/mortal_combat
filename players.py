@@ -36,6 +36,11 @@ class Player(ABC, metaclass=PlayerMeta):
             self.original_strike1 = pygame.image.load(self.TEXTURES[2]).convert_alpha()
             self.original_strike2 = pygame.image.load(self.TEXTURES[3]).convert_alpha()
             self.original_strike3 = pygame.image.load(self.TEXTURES[4]).convert_alpha()
+            self.win = pygame.image.load(self.TEXTURES[5]).convert_alpha()
+            self.die = pygame.image.load(self.TEXTURES[6]).convert_alpha()
+            self.original_aper1 = pygame.image.load(self.TEXTURES[7]).convert_alpha()
+            self.original_aper2 = pygame.image.load(self.TEXTURES[8]).convert_alpha()
+            self.original_aper3 = pygame.image.load(self.TEXTURES[9]).convert_alpha()
 
         except Exception as err:
             print(f'{type(err)}: {err}')
@@ -46,7 +51,9 @@ class Player(ABC, metaclass=PlayerMeta):
         self.strike1 = self.original_strike1.copy()
         self.strike2 = self.original_strike2.copy()
         self.strike3 = self.original_strike3.copy()
-
+        self.aper1 = self.original_aper1.copy()
+        self.aper2 = self.original_aper2.copy()
+        self.aper3 = self.original_aper3.copy()
         self.current_texture = self.base
         self.rect = self.current_texture.get_rect()
         self.rect.midbottom = (x, y)
@@ -54,6 +61,7 @@ class Player(ABC, metaclass=PlayerMeta):
         self.velocity = 5
         self.controls = controls
         self.is_attacking = False
+        self.is_aper = False
         self.attack_frame = 0
         self.attack_cooldown = 0
         self.flip = flip
@@ -103,6 +111,9 @@ class Player(ABC, metaclass=PlayerMeta):
             self.strike1 = pygame.transform.flip(self.original_strike1, self.should_flip, False)
             self.strike2 = pygame.transform.flip(self.original_strike2, self.should_flip, False)
             self.strike3 = pygame.transform.flip(self.original_strike3, self.should_flip, False)
+            self.aper1 = pygame.transform.flip(self.original_aper1, self.should_flip, False)
+            self.aper2 = pygame.transform.flip(self.original_aper2, self.should_flip, False)
+            self.aper3 = pygame.transform.flip(self.original_aper3, self.should_flip, False)
 
             if self.is_attacking:
                 if self.attack_frame < 5:
@@ -114,12 +125,22 @@ class Player(ABC, metaclass=PlayerMeta):
             else:
                 self.current_texture = self.base
 
+            if self.is_aper:
+                if self.attack_frame < 5:
+                    self.current_texture = self.aper1
+                elif self.attack_frame < 10:
+                    self.current_texture = self.aper2
+                elif self.attack_frame < 15:
+                    self.current_texture = self.aper3
+            else:
+                self.current_texture = self.base
+
     def check_hit(self, other_player):
         if not self.is_alive or not other_player.is_alive:
             return
 
         current_time = pygame.time.get_ticks()
-        if (self.is_attacking and 5 <= self.attack_frame < 15 and
+        if ((self.is_attacking or self.is_aper) and self.BLOCK == False and 5 <= self.attack_frame < 15 and
                 abs(self.rect.centerx - other_player.rect.centerx) < self.attack_range and
                 abs(self.rect.centery - other_player.rect.centery) < 100 and
                 current_time - other_player.last_hit_time > self.hit_cooldown):
@@ -129,6 +150,8 @@ class Player(ABC, metaclass=PlayerMeta):
             other_player.last_hit_time = current_time
 
             if other_player.hp <= 0:
+                self.current_texture = self.win
+
                 other_player.is_alive = False
 
     def update(self, keys, other_player):
@@ -147,7 +170,34 @@ class Player(ABC, metaclass=PlayerMeta):
             self.attack_frame = 0
             self.attack_cooldown = 30
 
-        if self.is_attacking:
+        if keys[self.controls["aperkot"]] and self.attack_cooldown == 0:
+            self.is_aper = True
+            self.attack_frame = 0
+            self.attack_cooldown = 30
+
+        if pygame.key.get_pressed()[self.controls["block"]] == 1:
+            self.BLOCK = True
+
+
+        if self.BLOCK:
+            self.current_texture = self.block
+            if pygame.key.get_pressed()[self.controls["block"]] == 0:
+                self.BLOCK = False
+                self.current_texture = self.base
+
+        if self.is_aper and self.BLOCK == False:
+            self.attack_frame += 1
+            if self.attack_frame < 5:
+                self.current_texture = self.aper1
+            elif self.attack_frame < 10:
+                self.current_texture = self.aper2
+            elif self.attack_frame < 15:
+                self.current_texture = self.aper3
+            else:
+                self.is_attacking = False
+                self.current_texture = self.base
+
+        if self.is_attacking and self.BLOCK == False:
             self.attack_frame += 1
             if self.attack_frame < 5:
                 self.current_texture = self.strike1
@@ -196,6 +246,9 @@ class Player(ABC, metaclass=PlayerMeta):
         if self.is_alive:
             self.screen.blit(self.current_texture, self.rect)
             self.draw_hp_bar()
+        else:
+            self.current_texture = self.die
+            self.screen.blit(self.current_texture, self.rect)
 
 
 class Player1(Player):
@@ -222,19 +275,8 @@ class Player2(Player):
     ]
 
 
-class Player3(Player):
-    NAME = 'Гигант Стефан'
-
-    TEXTURES = [
-        get_pure_path('textures/3_gigant_stefan/base.png'),
-        get_pure_path('textures/3_gigant_stefan/base.png'),
-        get_pure_path('textures/3_gigant_stefan/base.png'),
-        get_pure_path('textures/3_gigant_stefan/base.png'),
-        get_pure_path('textures/3_gigant_stefan/base.png'),
-    ]
-
-
 class Player4(Player):
+
     NAME = 'WAAGH-Капиборя'
 
     TEXTURES = [
@@ -242,8 +284,39 @@ class Player4(Player):
         get_pure_path('textures/4_kapiboris/boris_block-Photoroom.png'),
         get_pure_path('textures/4_kapiboris/boris_ydar1-Photoroom.png'),
         get_pure_path('textures/4_kapiboris/borsi_ydar2-Photoroom.png'),
-        get_pure_path('textures/4_kapiboris/boris_ydar3-Photoroom.png')
+        get_pure_path('textures/4_kapiboris/boris_ydar3-Photoroom.png'),
+        get_pure_path('textures/4_kapiboris/boris_win-Photoroom.png'),
+        get_pure_path('textures/4_kapiboris/boris_die-Photoroom.png'),
+        get_pure_path('textures/4_kapiboris/boris_apercot1-Photoroom.png'),
+        get_pure_path('textures/4_kapiboris/boris_apercot2-Photoroom.png'),
+        get_pure_path('textures/4_kapiboris/boris_apercot3-Photoroom.png'),
+
+
+        # get_pure_path('textures/4_kapiboris/boris_prised1-Photoroom.png'),
+        # get_pure_path('textures/4_kapiboris/boris_prised2-Photoroom.png'),
+        # get_pure_path('textures/4_kapiboris/boris_magiya-Photoroom.png'),
+        # get_pure_path('textures/4_kapiboris/boris_jump_kick1-Photoroom.png'),
+        # get_pure_path('textures/4_kapiboris/boris_jump_kick1(2)-Photoroom.png'),
+        # get_pure_path('textures/4_kapiboris/boris_jump_kick-Photoroom.png'),
     ]
+
+class Player3(Player):
+
+    NAME = 'Гигантский Стефан'
+
+    TEXTURES = [
+            get_pure_path('textures/3_gigantstefan/stefan_stoika-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_block-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar1-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar2-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_ydar3-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_win-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_proigral-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_aperkot1-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_aperkot2-Photoroom.png'),
+            get_pure_path('textures/3_gigantstefan/stefan_aperkot3-Photoroom.png'),
+        ]
+
 
 
 def get_midpoint(player1: Player, player2: Player):
