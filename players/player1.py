@@ -6,10 +6,17 @@ class Player1(Player):
     NAME = 'Мега-СВШ'
 
     TEXTURES = [
-        get_pure_path('textures/1_svsh/base.png'),
-        get_pure_path('textures/1_svsh/block.png'),
-        get_pure_path('textures/1_svsh/strike1.png'),
-        get_pure_path('textures/1_svsh/strike2.png'),
-        get_pure_path('textures/1_svsh/strike3.png'),
+        get_pure_path('textures/1_svsh/base_resized.png'),
+        get_pure_path('textures/1_svsh/block_resized.png'),
+        get_pure_path('textures/1_svsh/strike1_resized.png'),
+        get_pure_path('textures/1_svsh/strike2_resized.png'),
+        get_pure_path('textures/1_svsh/strike3_resized.png'),
+
+        get_pure_path('textures/1_svsh/win_resized.png'),
+        get_pure_path('textures/1_svsh/defeat_resized.png'),
+
+        get_pure_path('textures/1_svsh/aperkot1_resized.png'),
+        get_pure_path('textures/1_svsh/aperkot2_resized.png'),
+        get_pure_path('textures/1_svsh/aperkot3_resized.png'),
     ]
 
