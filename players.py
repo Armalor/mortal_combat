@@ -215,10 +215,10 @@ class Player3(Player):
 
     TEXTURES = [
             get_pure_path('textures/3_gigant_stefan/base.png'),
-            get_pure_path('textures/3_gigant_stefan/base.png'),
-            get_pure_path('textures/3_gigant_stefan/base.png'),
-            get_pure_path('textures/3_gigant_stefan/base.png'),
-            get_pure_path('textures/3_gigant_stefan/base.png'),
+            get_pure_path('textures/3_gigant_stefan/block.png'),
+            get_pure_path('textures/3_gigant_stefan/strike1.png'),
+            get_pure_path('textures/3_gigant_stefan/strike2.png'),
+            get_pure_path('textures/3_gigant_stefan/strike3.png'),
         ]
 
 
