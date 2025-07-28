@@ -10,18 +10,39 @@ def menushka(screen):
 
     players = Player.players  # Список классов игроков
 
+    # Load background textures
+    try:
+        bg_choose = pygame.image.load('textures/pchoosebck.png').convert_alpha()
+        bg_p1 = pygame.image.load('textures/p1bck.png').convert_alpha()
+        bg_p2 = pygame.image.load('textures/p2bck.png').convert_alpha()
+        
+        # Scale backgrounds to fit the selection areas
+        bg_choose = pygame.transform.scale(bg_choose, (screen.get_width(), screen.get_height()))
+        bg_p1 = pygame.transform.scale(bg_p1, (300, 500))
+        bg_p2 = pygame.transform.scale(bg_p2, (300, 500))
+    except:
+        # Fallback if textures are missing
+        bg_choose = pygame.Surface((screen.get_width(), screen.get_height()))
+        bg_choose.fill((0, 0, 0))
+        bg_p1 = pygame.Surface((300, 500))
+        bg_p1.fill((50, 0, 0))
+        bg_p2 = pygame.Surface((300, 500))
+        bg_p2.fill((0, 0, 50))
+
     player1_rect = pygame.Rect(100, 100, 300, 500)
     player2_rect = pygame.Rect(800, 100, 300, 500)
 
     font = pygame.font.SysFont('SysFont', 52)
-    text1 = font.render('Выберите бойца', False, (255, 255, 255))
+
     font_small = pygame.font.SysFont('SysFont', 32)
 
     while (player1_instance is None) or (player2_instance is None):
-        screen.fill((0, 0, 0))
-        screen.blit(text1, (460, 100))
+        # Draw background
+        screen.blit(bg_choose, (0, 0))
+        screen.blit(bg_p1, player1_rect)
+        screen.blit(bg_p2, player2_rect)
+        
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 return player1_instance, player2_instance
 
@@ -74,12 +95,10 @@ def menushka(screen):
                 if player2_instance is None and curr_section == -1:
                     curr_p2_idx = (curr_p2_idx + plus) % len(players)
 
-        # переключение квадратов
+        # Draw green outline for current selection
         if curr_section == 1:
             pygame.draw.rect(screen, (0, 255, 0), player1_rect, 8)
-            pygame.draw.rect(screen, (50, 50, 50), player2_rect, 8)
         else:
-            pygame.draw.rect(screen, (50, 50, 50), player1_rect, 8)
             pygame.draw.rect(screen, (0, 255, 0), player2_rect, 8)
 
         # рисование бойцов
@@ -107,8 +126,6 @@ def menushka(screen):
 
 
 if __name__ == '__main__':  # просто пример
-
     player_list = Player.players
-
     for player_class in player_list:
         print(player_class)
