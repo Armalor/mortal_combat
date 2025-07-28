@@ -293,6 +293,7 @@ class Player4(Player):
 
 class Player3(Player):
 
+
     NAME = 'Гигантский Стефан'
 
     TEXTURES = [
