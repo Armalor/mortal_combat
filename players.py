@@ -251,28 +251,28 @@ class Player(ABC, metaclass=PlayerMeta):
             self.screen.blit(self.current_texture, self.rect)
 
 
-class Player1(Player):
-    NAME = 'Мега-СВШ'
+# class Player1(Player):
+#     NAME = 'Мега-СВШ'
+#
+#     TEXTURES = [
+#         get_pure_path('textures/1_svsh/base.png'),
+#         get_pure_path('textures/1_svsh/block.png'),
+#         get_pure_path('textures/1_svsh/strike1.png'),
+#         get_pure_path('textures/1_svsh/strike2.png'),
+#         get_pure_path('textures/1_svsh/strike3.png'),
+#     ]
 
-    TEXTURES = [
-        get_pure_path('textures/1_svsh/base.png'),
-        get_pure_path('textures/1_svsh/block.png'),
-        get_pure_path('textures/1_svsh/strike1.png'),
-        get_pure_path('textures/1_svsh/strike2.png'),
-        get_pure_path('textures/1_svsh/strike3.png'),
-    ]
 
-
-class Player2(Player):
-    NAME = 'Человек-Борян'
-
-    TEXTURES = [
-        get_pure_path('textures/2_boris_chai/base.png'),
-        get_pure_path('textures/2_boris_chai/block.png'),
-        get_pure_path('textures/2_boris_chai/strike1.png'),
-        get_pure_path('textures/2_boris_chai/strike2.png'),
-        get_pure_path('textures/2_boris_chai/strike3.png'),
-    ]
+# class Player2(Player):
+#     NAME = 'Человек-Борян'
+#
+#     TEXTURES = [
+#         get_pure_path('textures/2_boris_chai/base.png'),
+#         get_pure_path('textures/2_boris_chai/block.png'),
+#         get_pure_path('textures/2_boris_chai/strike1.png'),
+#         get_pure_path('textures/2_boris_chai/strike2.png'),
+#         get_pure_path('textures/2_boris_chai/strike3.png'),
+#     ]
 
 
 class Player4(Player):
