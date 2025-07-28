@@ -257,7 +257,7 @@ class Player(ABC, metaclass=PlayerMeta):
             color = (255, 0, 0)
         else:
             x = self.screen.get_width() - bar_width - 20
-            text_x = x + bar_width - 190
+            text_x = x + bar_width - 240
             color = (0, 0, 255)
 
         y = 20
