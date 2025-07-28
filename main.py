@@ -1,4 +1,5 @@
 import sys
+import time
 import random
 from os import path
 from menu import menushka
@@ -119,7 +120,9 @@ while running:
             game_over_time = pygame.time.get_ticks()
     else:
         # Ждем 3 секунды после победы
+
         if pygame.time.get_ticks() - game_over_time > 3000:
+            # print(f"Игрок {winner} победил!")
             running = False
 
     screen.fill((0, 0, 0))
