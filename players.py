@@ -68,6 +68,12 @@ class Player(ABC, metaclass=PlayerMeta):
         self.should_flip = flip
         self.is_player1 = is_player1
 
+        self.magic_cooldown = 10000  # задержка для магии
+        self.is_casting_magic = False
+        self.is_aper_magic = False  # Изначально False
+        self.magic_frame = 0
+        self.magic_range = 500
+
         self.hp = 100
         self.max_hp = 100
         self.BLOCK = False
@@ -175,9 +181,11 @@ class Player(ABC, metaclass=PlayerMeta):
             self.attack_frame = 0
             self.attack_cooldown = 30
 
+        if keys[self.controls["magic"]]:
+            self.magic(other_player)
+
         if pygame.key.get_pressed()[self.controls["block"]] == 1:
             self.BLOCK = True
-
 
         if self.BLOCK:
             self.current_texture = self.block
@@ -214,6 +222,26 @@ class Player(ABC, metaclass=PlayerMeta):
 
         self.rect.x = max(0, min(self.rect.x, self.screen.get_width() - self.rect.width))
         self.check_hit(other_player)
+
+    def magic(self, other_player):
+        if not self.is_alive or not other_player.is_alive:
+            return
+
+        current_time = pygame.time.get_ticks()
+
+        if ((self.is_casting_magic or self.is_aper_magic) and  # Проверяем, что игрок кастует магию
+                5 <= self.magic_frame < 15 and  # "активное окно" магии
+                abs(self.rect.centerx - other_player.rect.centerx) < self.magic_range and  # Дальность магии
+                abs(self.rect.centery - other_player.rect.centery) < 100 and  # Высота
+                current_time - other_player.last_hit_time > self.hit_cooldown):  # Cooldown как и для обычных ударов
+
+            damage = 30
+            other_player.hp = max(0, other_player.hp - damage)
+            other_player.last_hit_time = current_time  # Обновляем время последнего удара
+
+            if other_player.hp <= 0:
+                self.current_texture = self.win
+                other_player.is_alive = False
 
     def draw_hp_bar(self):
         if not self.is_alive:
@@ -255,11 +283,16 @@ class Player1(Player):
     NAME = 'Мега-СВШ'
 
     TEXTURES = [
-        get_pure_path('textures/1_svsh/base.png'),
-        get_pure_path('textures/1_svsh/block.png'),
-        get_pure_path('textures/1_svsh/strike1.png'),
-        get_pure_path('textures/1_svsh/strike2.png'),
-        get_pure_path('textures/1_svsh/strike3.png'),
+        get_pure_path('textures/1_svsh/base_resized.png'),
+        get_pure_path('textures/1_svsh/block_resized.png'),
+        get_pure_path('textures/1_svsh/strike1_resized.png'),
+        get_pure_path('textures/1_svsh/strike2_resized.png'),
+        get_pure_path('textures/1_svsh/strike3_resized.png'),
+        get_pure_path('textures/1_svsh/win_resized.png'),
+        get_pure_path('textures/1_svsh/defeat_resized.png'),
+        get_pure_path('textures/1_svsh/aperkot1_resized.png'),
+        get_pure_path('textures/1_svsh/aperkot2_resized.png'),
+        get_pure_path('textures/1_svsh/aperkot3_resized.png')
     ]
 
 
@@ -275,8 +308,24 @@ class Player2(Player):
     ]
 
 
-class Player4(Player):
+class Player3(Player):
+    NAME = 'Гигантский Стефан'
 
+    TEXTURES = [
+        get_pure_path('textures/3_gigantstefan/stefan_stoika-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_block-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_ydar1-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_ydar2-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_ydar3-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_win-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_proigral-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_aperkot1-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_aperkot2-Photoroom.png'),
+        get_pure_path('textures/3_gigantstefan/stefan_aperkot3-Photoroom.png'),
+    ]
+
+
+class Player4(Player):
     NAME = 'WAAGH-Капиборя'
 
     TEXTURES = [
@@ -291,7 +340,6 @@ class Player4(Player):
         get_pure_path('textures/4_kapiboris/boris_apercot2-Photoroom.png'),
         get_pure_path('textures/4_kapiboris/boris_apercot3-Photoroom.png'),
 
-
         # get_pure_path('textures/4_kapiboris/boris_prised1-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_prised2-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_magiya-Photoroom.png'),
@@ -299,24 +347,6 @@ class Player4(Player):
         # get_pure_path('textures/4_kapiboris/boris_jump_kick1(2)-Photoroom.png'),
         # get_pure_path('textures/4_kapiboris/boris_jump_kick-Photoroom.png'),
     ]
-
-class Player3(Player):
-
-    NAME = 'Гигантский Стефан'
-
-    TEXTURES = [
-            get_pure_path('textures/3_gigantstefan/stefan_stoika-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_block-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_ydar1-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_ydar2-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_ydar3-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_win-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_proigral-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_aperkot1-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_aperkot2-Photoroom.png'),
-            get_pure_path('textures/3_gigantstefan/stefan_aperkot3-Photoroom.png'),
-        ]
-
 
 
 def get_midpoint(player1: Player, player2: Player):
