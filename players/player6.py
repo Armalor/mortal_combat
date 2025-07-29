@@ -3,6 +3,9 @@ from players import Player
 
 
 class Player5(Player):
+    """
+    Размеры →
+    """
     NAME = "Светлан-бананан"
 
     TEXTURES = [
